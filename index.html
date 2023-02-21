@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <button id="start" onclick="startGame()">start game!</button>
+    <button id="addWord" onclick="addWord()">add new word!</button>
+    <div id="endGame"></div>
+</head>
+<body>
+
+</body>
+<script>
+    const attempt = 10;
+
+    const endGameMsg = document.getElementById('endGame');
+    let words = ['javascript', 'ruby', 'python', 'monkey', 'pancake', 'salad', 'guitar', 'apple', 'box', 'toy', 'dragon'];
+    function addWord() {
+        let newWord = prompt('Enter the new word!');
+        words.push(newWord);
+    }
+    function startGame() {
+        let usageLetters = [];
+        let currentAttempt = 0;
+        let guess = null;
+        let randomWord = words[Math.floor(Math.random()*words.length)];
+        console.log(randomWord)
+        let answerArray = [];
+        for (let i=0; i < randomWord.length; i++) {
+            answerArray[i] = "_";
+        }
+        let remainingLetters = randomWord.length;
+        while (remainingLetters > 0 && currentAttempt <attempt) {
+            alert(answerArray.join(' ') + ' Attempts: ' + currentAttempt + '/' + attempt + '  ' + 'Usage letters: ' + usageLetters);
+            guess = prompt('Enter a letter or click Cancel!');
+            if (guess === null) {
+                break;
+            } else if (guess.length != 1) {
+                alert('Please, enter a single letter!');
+            } else {
+                let notPush = true;
+                if(notPush) {
+                    for (let z = 0; z < usageLetters.length; z++) {
+                        if (guess === usageLetters[z]) {
+                            alert('You arleady used this letter!');
+                            notPush = false;
+                            break;
+                        }
+                    }
+                }
+                for (let j = 0; j < randomWord.length; j++) {
+                    if (randomWord[j] === guess) {
+                        answerArray[j] = guess;
+                        remainingLetters--;
+
+                    }
+                }
+                if (notPush) {
+                    usageLetters.push(guess);
+                    currentAttempt++;
+                }
+                //currentAttempt++;
+
+            }
+        }
+        for (let k = 0; k < answerArray.length; k++) {
+            if (answerArray[k] == "_" || currentAttempt == attempt || guess === null) {
+                endGameMsg.innerText= 'you lose The answer was ' + randomWord
+                break;
+            }
+            else {endGameMsg.innerText = 'you win! the answer was ' + randomWord}
+            break;
+        }
+    }
+
+</script>
+</html>
